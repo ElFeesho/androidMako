@@ -23,5 +23,8 @@
         
         <activity android:name=".RomChooserActivity"
 			android:theme="@android:style/Theme.Holo"/>
+		
+		<activity android:name=".CompileActivity"
+			android:theme="@android:style/Theme.Holo"/>
     </application>
 </manifest>
