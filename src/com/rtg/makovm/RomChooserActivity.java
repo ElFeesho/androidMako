@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.view.*;
 
 public class RomChooserActivity extends ListActivity {
 	private final static String DOWNLOAD_DIR = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
@@ -162,14 +163,26 @@ public class RomChooserActivity extends ListActivity {
 		
 		getListView().setOnItemClickListener(new OnItemClickListener()
 		{
-
 			@Override
 			public void onItemClick(AdapterView<?> listView, View item, int pos,
 					long id) {
 				startActivity(new Intent(RomChooserActivity.this, Makoid.class).putExtra(Makoid.EXTRA_ROM_FILE, mRomAdapter.getItem(pos).getAbsolutePath()));
 				finish();
 			}
-			
 		});
+		
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		getMenuInflater().inflate(R.menu.rom_chooser, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		startActivity(new Intent(this, CompileActivity.class));
+		return super.onOptionsItemSelected(item);
 	}
 }
