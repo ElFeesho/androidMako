@@ -1,17 +1,86 @@
 package com.rtg.makovm;
-import android.app.*;
-import android.os.*;
+
+import java.io.File;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 
 public class CompileActivity extends Activity
 {
-   private String mDir = "/sdcard";
+	private File mDir = new File("/sdcard");
 
- //  private BaseAdapter
-   
-   protected void onCreate(Bundle state)
-   {
-	   super.onCreate(state);
-	   setContentView(R.layout.rom_chooser);
-	   
-   }
+	private class FileAdapter extends BaseAdapter
+	{
+
+		private File[] mCurrentDir = new File[] {};
+		
+		public void setCurrentDir(File aDir)
+		{
+			mDir = aDir;
+			mCurrentDir = mDir.listFiles();
+			notifyDataSetChanged();
+		}
+		
+		@Override
+		public View getView(int arg0, View arg1, ViewGroup arg2)
+		{
+			if(arg1 == null)
+			{
+				arg1 = LayoutInflater.from(arg2.getContext()).inflate(android.R.layout.simple_list_item_1, null);
+			}
+			File file = getItem(arg0);
+			((TextView)arg1).setText(file.getName() +(file.isDirectory()?"/":" "+file.length()+ " bytes"));
+			
+			return arg1;
+		}
+
+		@Override
+		public long getItemId(int arg0)
+		{
+			return 0;
+		}
+
+		@Override
+		public File getItem(int arg0)
+		{
+			return arg0 == 0 ? new File(mDir, "..") : mCurrentDir[arg0-1];
+		}
+
+		@Override
+		public int getCount()
+		{
+			return mCurrentDir.length+1;
+		}
+	};
+	
+	private FileAdapter mFileAdapter = new FileAdapter();
+
+	protected void onCreate(Bundle state)
+	{
+		super.onCreate(state);
+		setContentView(R.layout.rom_chooser);
+		ListView listView = (ListView) findViewById(android.R.id.list);
+		listView.setAdapter(mFileAdapter);
+		mFileAdapter.setCurrentDir(mDir);
+		listView.setOnItemClickListener(new OnItemClickListener()
+		{
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3)
+			{
+				File selectedFile = mFileAdapter.getItem(arg2);
+				if(selectedFile.isDirectory())
+				{
+					mFileAdapter.setCurrentDir(selectedFile);
+				}
+			}
+		});
+	}
 }
