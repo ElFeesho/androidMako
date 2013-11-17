@@ -12,6 +12,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.*;
+import android.os.*;
 
 public class CompileActivity extends Activity
 {
@@ -79,6 +81,28 @@ public class CompileActivity extends Activity
 				if(selectedFile.isDirectory())
 				{
 					mFileAdapter.setCurrentDir(selectedFile);
+				}
+				else if(selectedFile.getName().endsWith(".fs"))
+				{
+					new AsyncTask<File, Void, Void>()
+					{
+
+						protected Void doInBackground(File... p1)
+						{
+							Maker.compile(p1[0].getAbsolutePath(), "/sdcard/Mako/"+p1[0].getName().substring(0, p1[0].getName().lastIndexOf(".")));
+							return null;
+						}
+						
+						protected void onPostExecute(Void res)
+						{
+							Toast.makeText(CompileActivity.this, "Finished compiling", Toast.LENGTH_LONG).show();
+						}
+						
+					}.execute(selectedFile);
+				}
+				else
+				{
+					Toast.makeText(CompileActivity.this, "Only .fs files are supported", Toast.LENGTH_LONG).show();
 				}
 			}
 		});

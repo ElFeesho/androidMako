@@ -30,7 +30,7 @@ public class Maker implements MakoConstants {
 		catch(IOException f) { System.out.println("Warning: unable to load lib/Lang.fs!"); }
 		compiler.compile(inputFile);
 		
-		compiler.rom.write("/sdcard/test.rom", false);
+		compiler.rom.write(output, false);
 		
 	}
 
