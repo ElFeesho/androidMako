@@ -16,7 +16,7 @@ import android.graphics.*;
 public class MakoView extends View {
 
 	private static final String TAG = "MakoView";
-	private static final int FRAME_RATE = 1000 / 100;
+	private static final int FRAME_RATE = 1000 / 60;
 	private MakoVM mVm;
 
 	private float mScale;
@@ -180,9 +180,9 @@ public class MakoView extends View {
 		c.drawBitmap(mVm.p, 0, 320, 0, 0, 320, 240, false, null);
 		c.restore();
 
-		mVm.run();
-
 		postInvalidateDelayed(FRAME_RATE);
+		
+		mVm.run();
 	}
 
 	public void keyPressed(int charAt) {
