@@ -10,31 +10,32 @@ import android.widget.Toast;
 import com.rtg.makovm.MakoKeyboard.MakoKeyboardListener;
 import com.rtg.makovm.MakoView.MakoViewListener;
 
-
-public class Makoid extends Activity implements MakoKeyboardListener, MakoViewListener {
+public class Makoid extends Activity implements MakoKeyboardListener, MakoViewListener
+{
 	public static final String EXTRA_ROM_FILE = "romfile";
-	
+
 	private MakoView mView = null;
 
 	private MakoKeyboard mKeyboard = null;
-	
+
 	private ProgressDialog mLoadingDlg = null;
-	
+
 	private String mRomFileName = null;
-	
+
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		
-		mRomFileName = getIntent()!=null?getIntent().getStringExtra(EXTRA_ROM_FILE):null;
-		
-		if(savedInstanceState!=null)
+
+		mRomFileName = getIntent() != null ? getIntent().getStringExtra(EXTRA_ROM_FILE) : null;
+
+		if (savedInstanceState != null)
 		{
 			mRomFileName = savedInstanceState.getString(EXTRA_ROM_FILE);
 		}
-		
-		if(mRomFileName == null)
+
+		if (mRomFileName == null)
 		{
 			startActivity(new Intent(this, RomChooserActivity.class));
 			finish();
@@ -44,76 +45,127 @@ public class Makoid extends Activity implements MakoKeyboardListener, MakoViewLi
 		// Retrieve a reference to the view inflated in the layout
 		mView = (MakoView) findViewById(R.id.Makoid_MakoView);
 		mView.setListener(this);
-		
+
 		mView.setRom(mRomFileName);
-		
+
 		mKeyboard = (MakoKeyboard) findViewById(R.id.Makoid_Keyboard);
 		mKeyboard.setListener(this);
 	}
 
 	// Support HW keyboards
 	@Override
-	public boolean dispatchKeyEvent(KeyEvent event) {
+	public boolean dispatchKeyEvent(KeyEvent event)
+	{
 		mView.dispatchKeyEvent(event);
 		return super.dispatchKeyEvent(event);
 	}
 
 	@Override
-	public void makoKeyboardKeyTyped(String key) {
+	public void makoKeyboardKeyTyped(String key)
+	{
 		// Unused?
 	}
 
 	@Override
-	public void makoKeyboardKeyPressed(String key) {
-		if      (   "Del".equals(key)) { mView.keyPressed( 8); }
-		else if (   "Brk".equals(key)) { mView.keyPressed( 3); }
-		else if ( "Enter".equals(key)) { mView.keyPressed(10); }
-		else if (    "up".equals(key)) { mView.setKeys(MakoConstants.KEY_UP); }
-		else if (    "dn".equals(key)) { mView.setKeys(MakoConstants.KEY_DN); }
-		else if (    "lf".equals(key)) { mView.setKeys(MakoConstants.KEY_LF); }
-		else if (    "rt".equals(key)) { mView.setKeys(MakoConstants.KEY_RT); }
-		else {
-			if(key.equals(" "))
+	public void makoKeyboardKeyPressed(String key)
+	{
+		if ("Del".equals(key))
+		{
+			mView.keyPressed(8);
+		}
+		else if ("Brk".equals(key))
+		{
+			mView.keyPressed(3);
+		}
+		else if ("Enter".equals(key))
+		{
+			mView.keyPressed(10);
+		}
+		else if ("up".equals(key))
+		{
+			mView.setKeys(MakoConstants.KEY_UP);
+		}
+		else if ("dn".equals(key))
+		{
+			mView.setKeys(MakoConstants.KEY_DN);
+		}
+		else if ("lf".equals(key))
+		{
+			mView.setKeys(MakoConstants.KEY_LF);
+		}
+		else if ("rt".equals(key))
+		{
+			mView.setKeys(MakoConstants.KEY_RT);
+		}
+		else
+		{
+			if (key.equals(" "))
 			{
 				mView.setKeys(MakoConstants.KEY_A);
 			}
-			mView.keyPressed((int)key.charAt(0));
+			mView.keyPressed(key.charAt(0));
 		}
-		
+
 	}
 
 	@Override
-	public void makoKeyboardKeyReleased(String key) {
-		if      (   "Del".equals(key)) { mView.keyReleased( 8); }
-		else if (   "Brk".equals(key)) { mView.keyReleased( 3); }
-		else if ( "Enter".equals(key)) { mView.keyReleased(10); }
-		else if (    "up".equals(key)) { mView.unsetKeys(MakoConstants.KEY_UP); }
-		else if (    "dn".equals(key)) { mView.unsetKeys(MakoConstants.KEY_DN); }
-		else if (    "lf".equals(key)) { mView.unsetKeys(MakoConstants.KEY_LF); }
-		else if (    "rt".equals(key)) { mView.unsetKeys(MakoConstants.KEY_RT); }
-		else {
-			if(key.equals(" "))
+	public void makoKeyboardKeyReleased(String key)
+	{
+		if ("Del".equals(key))
+		{
+			mView.keyReleased(8);
+		}
+		else if ("Brk".equals(key))
+		{
+			mView.keyReleased(3);
+		}
+		else if ("Enter".equals(key))
+		{
+			mView.keyReleased(10);
+		}
+		else if ("up".equals(key))
+		{
+			mView.unsetKeys(MakoConstants.KEY_UP);
+		}
+		else if ("dn".equals(key))
+		{
+			mView.unsetKeys(MakoConstants.KEY_DN);
+		}
+		else if ("lf".equals(key))
+		{
+			mView.unsetKeys(MakoConstants.KEY_LF);
+		}
+		else if ("rt".equals(key))
+		{
+			mView.unsetKeys(MakoConstants.KEY_RT);
+		}
+		else
+		{
+			if (key.equals(" "))
 			{
 				mView.unsetKeys(MakoConstants.KEY_A);
 			}
-			mView.keyReleased((int)key.charAt(0));
+			mView.keyReleased(key.charAt(0));
 		}
 	}
 
 	@Override
-	public void makoViewStartLoading() {
+	public void makoViewStartLoading()
+	{
 		mLoadingDlg = ProgressDialog.show(this, null, "Loading Rom...");
 		mLoadingDlg.setOwnerActivity(this);
 	}
 
 	@Override
-	public void makoViewFinishLoading() {
+	public void makoViewFinishLoading()
+	{
 		mLoadingDlg.dismiss();
-		mLoadingDlg = null;		
+		mLoadingDlg = null;
 	}
 
 	@Override
-	public void makoViewLoadError() {
+	public void makoViewLoadError()
+	{
 		Toast.makeText(this, "The ROM could not be loaded.", Toast.LENGTH_LONG).show();
 
 	}
