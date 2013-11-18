@@ -16,8 +16,10 @@ import android.graphics.*;
 public class MakoView extends View {
 
 	private static final String TAG = "MakoView";
-	private static final int FRAME_RATE = 1000 / 60;
+	private static final int FRAME_RATE = 1000 / 100;
 	private MakoVM mVm;
+
+	private float mScale;
 
 	public interface MakoViewListener {
 		public void makoViewStartLoading();
@@ -152,6 +154,13 @@ public class MakoView extends View {
 				MeasureSpec.EXACTLY);
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 	}
+	
+	@Override
+	protected void onSizeChanged(int w, int h, int ow, int oh)
+	{
+		super.onSizeChanged(w,h,ow,oh);
+		mScale = (float)getResources().getDisplayMetrics().widthPixels/320.0f;
+	}
 
 	@Override
 	public void onDraw(Canvas c) {
@@ -167,7 +176,7 @@ public class MakoView extends View {
 		}
 		
 		c.save();
-		c.scale(2.5f, 2.5f);
+		c.scale(mScale, mScale);
 		c.drawBitmap(mVm.p, 0, 320, 0, 0, 320, 240, false, null);
 		c.restore();
 
