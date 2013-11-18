@@ -52,6 +52,13 @@ public class Makoid extends Activity implements MakoKeyboardListener, MakoViewLi
 		mKeyboard.setListener(this);
 	}
 
+	@Override
+	public void onBackPressed()
+	{
+		super.onBackPressed();
+		startActivity(new Intent(this, RomChooserActivity.class));
+	}
+	
 	// Support HW keyboards
 	@Override
 	public boolean dispatchKeyEvent(KeyEvent event)
