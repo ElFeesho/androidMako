@@ -93,4 +93,9 @@ public class RomListAdapter extends BaseAdapter
 		notifyDataSetChanged();
 
 	}
+
+	public void clear()
+	{
+		mRoms.clear();
+	}
 }

@@ -55,6 +55,7 @@ public class RomChooserActivity extends ListActivity
 
 	private void findRoms()
 	{
+		mRomAdapter.clear();
 		new RomFinderTask()
 		{
 			@Override
@@ -69,6 +70,10 @@ public class RomChooserActivity extends ListActivity
 				if (!found)
 				{
 					mEmpty.setText("Please download or compile roms to play.");
+				}
+				else
+				{
+					mRomAdapter.notifyDataSetChanged();
 				}
 			}
 		}.execute(MAKO_DIR, STORAGE_DIR, DOWNLOAD_DIR);
@@ -115,7 +120,14 @@ public class RomChooserActivity extends ListActivity
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
-		startActivity(new Intent(this, CompileActivity.class));
+		if(item.getItemId() == R.id.compile)
+		{
+			startActivity(new Intent(this, CompileActivity.class));
+		}
+		else if(item.getItemId() == R.id.refresh)
+		{
+			findRoms();
+		}
 		return super.onOptionsItemSelected(item);
 	}
 }
