@@ -9,12 +9,56 @@ import android.widget.Toast;
 
 import com.rtg.makovm.MakoKeyboard.MakoKeyboardListener;
 import com.rtg.makovm.MakoView.MakoViewListener;
+import com.rtg.makovm.JoystickView.JoystickListener;
 
-public class Makoid extends Activity implements MakoKeyboardListener, MakoViewListener
+public class Makoid extends Activity implements MakoKeyboardListener, MakoViewListener, JoystickListener
 {
+
+	public void joystickAxisOn(int axis, int dir)
+	{
+		if (axis == 0)
+		{
+			if(dir < 0)
+			{
+				mView.unsetKeys(MakoConstants.KEY_RT);
+				mView.setKeys(MakoConstants.KEY_LF);
+			}
+			else if (dir > 0)
+			{
+				mView.unsetKeys(MakoConstants.KEY_LF);
+				mView.setKeys(MakoConstants.KEY_RT);
+			}
+		} 
+		else if (axis == 1)
+		{
+			if(dir < 0)
+			{
+				mView.setKeys(MakoConstants.KEY_UP);
+			}
+			else
+			{
+				mView.setKeys(MakoConstants.KEY_DN);
+			}
+		}
+	}
+
+	public void joystickAxisOff(int axis)
+	{
+		if(axis == 0)
+		{
+			mView.unsetKeys(MakoConstants.KEY_LF|MakoConstants.KEY_RT);
+		}
+		else
+		{
+			mView.unsetKeys(MakoConstants.KEY_RT|MakoConstants.KEY_DN);
+		}
+	}
+	
 	public static final String EXTRA_ROM_FILE = "romfile";
 
 	private MakoView mView = null;
+	
+	private JoystickView mJoystick;
 
 	private MakoKeyboard mKeyboard = null;
 
@@ -28,6 +72,9 @@ public class Makoid extends Activity implements MakoKeyboardListener, MakoViewLi
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
+		mJoystick = (JoystickView) findViewById(R.id.joystick);
+		mJoystick.setListener(this);
+		
 		mRomFileName = getIntent() != null ? getIntent().getStringExtra(EXTRA_ROM_FILE) : null;
 
 		if (savedInstanceState != null)
