@@ -1,6 +1,6 @@
 package com.rtg.makovm;
 
-import java.util.*;
+import java.util.Random;
 
 public class MakoVM implements MakoConstants {
 
@@ -8,6 +8,7 @@ public class MakoVM implements MakoConstants {
 	public       int[] m;                      // main memory
 	public final int[] p = new int[320 * 240]; // pixel buffer
 	public int keys = 0;
+	//private final AudioTrack mAudio = new AudioTrack(AudioManager.STREAM_MUSIC, 8000, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_8BIT, 670, AudioTrack.MODE_STATIC);
 
 	public final java.util.Queue<Integer> keyQueue = new java.util.LinkedList<Integer>();
 
@@ -81,7 +82,7 @@ public class MakoVM implements MakoConstants {
 	private void stor(int addr, int value) {
 		if (addr == CO) { System.out.print((char)value); return; }
 		if (addr == AU) {
-			// TODO:
+
 			return;
 		}
 		m[addr] = value;
