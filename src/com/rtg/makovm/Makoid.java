@@ -4,66 +4,25 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
+import com.rtg.makovm.ButtonView.ButtonViewListener;
+import com.rtg.makovm.JoystickView.JoystickListener;
 import com.rtg.makovm.MakoKeyboard.MakoKeyboardListener;
 import com.rtg.makovm.MakoView.MakoViewListener;
-import com.rtg.makovm.JoystickView.JoystickListener;
 
-public class Makoid extends Activity implements MakoKeyboardListener, MakoViewListener, JoystickListener
+public class Makoid extends Activity implements MakoKeyboardListener, MakoViewListener, JoystickListener, ButtonViewListener
 {
-
-	public void joystickAxisOn(int axis, int dir)
-	{
-		if (axis == 0)
-		{
-			if(dir < 0)
-			{
-				mView.unsetKeys(MakoConstants.KEY_RT);
-				mView.setKeys(MakoConstants.KEY_LF);
-			}
-			else if (dir > 0)
-			{
-				mView.unsetKeys(MakoConstants.KEY_LF);
-				mView.setKeys(MakoConstants.KEY_RT);
-			}
-		} 
-		else if (axis == 1)
-		{
-			if(dir < 0)
-			{
-				mView.setKeys(MakoConstants.KEY_UP);
-			}
-			else
-			{
-				mView.setKeys(MakoConstants.KEY_DN);
-			}
-		}
-	}
-
-	public void joystickAxisOff(int axis)
-	{
-		if(axis == 0)
-		{
-			mView.unsetKeys(MakoConstants.KEY_LF|MakoConstants.KEY_RT);
-		}
-		else
-		{
-			mView.unsetKeys(MakoConstants.KEY_RT|MakoConstants.KEY_DN);
-		}
-	}
-	
 	public static final String EXTRA_ROM_FILE = "romfile";
 
 	private MakoView mView = null;
-	
 	private JoystickView mJoystick;
-
+	private ButtonView mButton;
 	private MakoKeyboard mKeyboard = null;
 
 	private ProgressDialog mLoadingDlg = null;
-
 	private String mRomFileName = null;
 
 	@Override
@@ -73,8 +32,10 @@ public class Makoid extends Activity implements MakoKeyboardListener, MakoViewLi
 		setContentView(R.layout.main);
 
 		mJoystick = (JoystickView) findViewById(R.id.joystick);
+		mButton = (ButtonView) findViewById(R.id.button_a);
+		mButton.setListener(this);
 		mJoystick.setListener(this);
-		
+
 		mRomFileName = getIntent() != null ? getIntent().getStringExtra(EXTRA_ROM_FILE) : null;
 
 		if (savedInstanceState != null)
@@ -105,7 +66,7 @@ public class Makoid extends Activity implements MakoKeyboardListener, MakoViewLi
 		super.onBackPressed();
 		startActivity(new Intent(this, RomChooserActivity.class));
 	}
-	
+
 	// Support HW keyboards
 	@Override
 	public boolean dispatchKeyEvent(KeyEvent event)
@@ -221,6 +182,64 @@ public class Makoid extends Activity implements MakoKeyboardListener, MakoViewLi
 	public void makoViewLoadError()
 	{
 		Toast.makeText(this, "The ROM could not be loaded.", Toast.LENGTH_LONG).show();
+	}
 
+	@Override
+	public void joystickAxisOn(int dir)
+	{
+		if (dir == JoystickView.DIR_LEFT)
+		{
+			mView.setKeys(MakoConstants.KEY_LF);
+			Log.i("JoystickView", "Left On");
+		}
+		else if (dir == JoystickView.DIR_RIGHT)
+		{
+			mView.setKeys(MakoConstants.KEY_RT);
+			Log.i("JoystickView", "Right On");
+		}
+		else if (dir == JoystickView.DIR_UP)
+		{
+			mView.setKeys(MakoConstants.KEY_UP);
+		}
+		else if (dir == JoystickView.DIR_DOWN)
+		{
+			mView.setKeys(MakoConstants.KEY_DN);
+		}
+
+	}
+
+	@Override
+	public void joystickAxisOff(int dir)
+	{
+		if (dir == JoystickView.DIR_LEFT)
+		{
+			mView.unsetKeys(MakoConstants.KEY_LF);
+			Log.i("JoystickView", "Left Off");
+		}
+		else if (dir == JoystickView.DIR_RIGHT)
+		{
+			mView.unsetKeys(MakoConstants.KEY_RT);
+			Log.i("JoystickView", "Right Off");
+		}
+		else if (dir == JoystickView.DIR_DOWN)
+		{
+			mView.unsetKeys(MakoConstants.KEY_DN);
+		}
+		else if (dir == JoystickView.DIR_UP)
+		{
+			mView.unsetKeys(MakoConstants.KEY_UP);
+		}
+	}
+
+	@Override
+	public void buttonViewDown(ButtonView aButtonView)
+	{
+		mView.setKeys(MakoConstants.KEY_A);
+	}
+
+	@Override
+	public void buttonViewUp(ButtonView aButtonView)
+	{
+		mView.unsetKeys(MakoConstants.KEY_A);
 	}
 }

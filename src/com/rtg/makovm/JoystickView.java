@@ -1,41 +1,45 @@
 package com.rtg.makovm;
-import android.view.*;
-import android.content.*;
-import android.util.*;
-import android.graphics.*;
+import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.util.AttributeSet;
+import android.view.MotionEvent;
+import android.view.View;
 
 public class JoystickView extends View
 {
+	public static final int DIR_UP = 0;
+	public static final int DIR_DOWN = 1;
+	public static final int DIR_LEFT = 2;
+	public static final int DIR_RIGHT = 3;
+
     public interface JoystickListener
 	{
-		public void joystickAxisOn(int axis, int dir);
-		public void joystickAxisOff(int axis);
+		public void joystickAxisOn(int dir);
+		public void joystickAxisOff(int dir);
 	}
-	
+
 	private boolean mLeft, mRight, mUp, mDown;
 
     private final Paint PAINT = new Paint();
 
-	private int stickWidth = 60;
-	
+	private final int stickWidth = 90;
+	private final int stickRadius = 150;
+
 	private float mX;
 	private float mY;
-	
+
 	private JoystickListener mListener = new JoystickListener()
 	{
 
-		public void joystickAxisOn(int axis, int dir)
-		{
-			
-		}
+		@Override
+		public void joystickAxisOn(int dir) {}
 
-		public void joystickAxisOff(int axis)
-		{
-			
-		}
-		
+		@Override
+		public void joystickAxisOff(int dir) {}
+
 	};
-	
+
 	public JoystickView(Context actx, AttributeSet attr)
 	{
 		this(actx, attr, 0);
@@ -49,26 +53,27 @@ public class JoystickView extends View
 		PAINT.setStyle(Paint.Style.STROKE);
 		PAINT.setTextSize(20);
 	}
-	
+
 	public void setListener(JoystickListener aListener)
 	{
 		mListener = aListener;
 	}
-	
+
 	@Override
 	protected void onMeasure(int w, int h)
 	{
-		setMeasuredDimension(200, 200);
+		setMeasuredDimension(stickRadius*2, stickRadius*2);
 	}
-	
+
+	@Override
 	public void onDraw(Canvas canvas)
 	{
 		super.onDraw(canvas);
-		canvas.drawCircle(100, 100, 100, PAINT);
-		canvas.drawCircle(mX+100, mY+100, stickWidth, PAINT);
-		canvas.drawText(mX+":"+mY, 0, 30, PAINT);
+		canvas.drawCircle(stickRadius, stickRadius, stickRadius, PAINT);
+		canvas.drawCircle(mX+stickRadius, mY+stickRadius, stickWidth, PAINT);
 	}
-	
+
+	@Override
 	public boolean dispatchTouchEvent(MotionEvent e)
 	{
 		if (e.getAction() == MotionEvent.ACTION_DOWN)
@@ -92,47 +97,75 @@ public class JoystickView extends View
 		mX = x;
 		mY = y;
 		double angle = Math.atan2(y, x);
-		mX = Math.min(Math.abs(mX), 40);
-		mY = Math.min(Math.abs(mY), 40);
-		
+		mX = Math.min(Math.abs(mX), stickRadius-stickWidth);
+		mY = Math.min(Math.abs(mY), stickRadius-stickWidth);
+
 		mX = (float) Math.cos(angle)*mX;
 		mY = (float) Math.sin(angle)*mY;
-		
-		calculateCallbacks(mX, mY);
+
+		calculateCallbacks();
 	}
 
-	private void calculateCallbacks(float mX, float mY)
+	private void calculateCallbacks()
 	{
-        if(mX > 30.0f && !mRight)
+        if(mX > stickWidth/2)
 		{
-			mListener.joystickAxisOn(0, 1);
-			mRight = true;
+        	if(!mRight)
+        	{
+				mListener.joystickAxisOn(DIR_RIGHT);
+				mRight = true;
+        	}
 		}
-		else if(mX < -30 && !mLeft)
+		else if(mX < -stickWidth/2)
 		{
-			mListener.joystickAxisOn(0, -1);
-			mLeft = true;
-		}
-		else if(mRight || mLeft && (mX > -30 && mX < 30))
-		{
-			mRight = mLeft = false;
-			mListener.joystickAxisOff(0);
-		}
-		
-		if(mY > 30 && !mUp)
-		{
-			mListener.joystickAxisOn(1, 1);
-			mUp = true;
-		}
-		else if(mY < -30 && !mDown)
-		{
-			mListener.joystickAxisOn(1, -1);
-			mDown = true;
+			if(!mLeft)
+			{
+				mListener.joystickAxisOn(DIR_LEFT);
+				mLeft = true;
+			}
 		}
 		else
 		{
-			mUp = mDown = false;
-			mListener.joystickAxisOff(1);
+			if(mLeft)
+			{
+				mListener.joystickAxisOff(DIR_LEFT);
+				mLeft = false;
+			}
+			else if(mRight)
+			{
+				mListener.joystickAxisOff(DIR_RIGHT);
+				mRight = false;
+			}
+		}
+
+		if(mY > stickWidth/2)
+		{
+			if(!mDown)
+			{
+				mListener.joystickAxisOn(DIR_DOWN);
+				mDown = true;
+			}
+		}
+		else if(mY < -stickWidth/2)
+		{
+			if(!mUp)
+			{
+				mListener.joystickAxisOn(DIR_UP);
+				mUp = true;
+			}
+		}
+		else
+		{
+			if(mUp)
+			{
+				mListener.joystickAxisOff(DIR_UP);
+				mUp = false;
+			}
+			else if(mDown)
+			{
+				mListener.joystickAxisOff(DIR_DOWN);
+				mDown = false;
+			}
 		}
 	}
 }

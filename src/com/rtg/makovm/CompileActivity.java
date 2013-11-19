@@ -90,7 +90,6 @@ public class CompileActivity extends Activity
 				{
 					new AsyncTask<File, Void, Void>()
 					{
-
 						@Override
 						protected Void doInBackground(File... p1)
 						{

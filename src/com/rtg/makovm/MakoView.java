@@ -1,17 +1,19 @@
 package com.rtg.makovm;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
-import android.view.KeyEvent;
-import android.view.View;
 import android.content.Context;
+import android.graphics.Canvas;
 import android.os.AsyncTask;
 import android.util.AttributeSet;
 import android.util.Log;
-
-import android.graphics.*;
+import android.view.KeyEvent;
+import android.view.View;
 
 public class MakoView extends View {
 
@@ -45,7 +47,7 @@ public class MakoView extends View {
 				mListener.makoViewStartLoading();
 			}
 		}
-		
+
 		@Override
 		protected Boolean doInBackground(String... params) {
 			// Only can load one rom at a time... which makes sense
@@ -70,7 +72,7 @@ public class MakoView extends View {
 					postInvalidate(); // Start rendering
 				}
 				mListener.makoViewFinishLoading();
-				
+
 			}
 		}
 	}
@@ -154,34 +156,34 @@ public class MakoView extends View {
 				MeasureSpec.EXACTLY);
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 	}
-	
+
 	@Override
 	protected void onSizeChanged(int w, int h, int ow, int oh)
 	{
 		super.onSizeChanged(w,h,ow,oh);
-		mScale = (float)getResources().getDisplayMetrics().widthPixels/320.0f;
+		mScale = getResources().getDisplayMetrics().widthPixels/320.0f;
 	}
 
 	@Override
 	public void onDraw(Canvas c) {
 		super.onDraw(c);
 		if (isInEditMode()) {
-			c.drawColor(0xffff8800);
+			c.drawColor(0xff0088ff);
 			return;
 		}
-		
+
 		if(mVm == null)
 		{
 			return;
 		}
-		
+
 		c.save();
 		c.scale(mScale, mScale);
 		c.drawBitmap(mVm.p, 0, 320, 0, 0, 320, 240, false, null);
 		c.restore();
 
 		postInvalidateDelayed(FRAME_RATE);
-		
+
 		mVm.run();
 	}
 

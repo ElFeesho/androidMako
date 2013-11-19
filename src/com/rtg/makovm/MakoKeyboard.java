@@ -1,6 +1,8 @@
 package com.rtg.makovm;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -20,16 +22,16 @@ public class MakoKeyboard extends LinearLayout {
 	private MakoKeyboardListener mListener = null;
 	private Button               mShift    = null;
 	private boolean              mShifted  = false;
-	private Map<Button, Key>     keys      = new HashMap<Button, Key>();
+	private final Map<Button, Key>     keys      = new HashMap<Button, Key>();
 
-	private OnClickListener mShiftClickListener = new OnClickListener() {
+	private final OnClickListener mShiftClickListener = new OnClickListener() {
 		@Override
 		public void onClick(View v) {
 			setShifted(!mShifted);
 		}
 	};
-	
-	private OnTouchListener mTouchListener = new OnTouchListener() {
+
+	private final OnTouchListener mTouchListener = new OnTouchListener() {
 		@Override
 		public boolean onTouch(View v, MotionEvent event) {
 			if(mListener==null) {
@@ -38,7 +40,7 @@ public class MakoKeyboard extends LinearLayout {
 
 			if(event.getAction() == MotionEvent.ACTION_DOWN) {
 				if (keys.containsKey(v)) {
-					Key k = keys.get((Button)v);
+					Key k = keys.get(v);
 					mListener.makoKeyboardKeyPressed(mShifted ? k.shifted : k.normal);
 				}
 				else {
@@ -47,7 +49,7 @@ public class MakoKeyboard extends LinearLayout {
 			}
 			else if(event.getAction() == MotionEvent.ACTION_UP) {
 				if (keys.containsKey(v)) {
-					Key k = keys.get((Button)v);
+					Key k = keys.get(v);
 					mListener.makoKeyboardKeyReleased(mShifted ? k.shifted : k.normal);
 				}
 				else {
@@ -59,7 +61,7 @@ public class MakoKeyboard extends LinearLayout {
 			return false;
 		}
 	};
-	
+
 	public void setListener(MakoKeyboardListener mListener) {
 		this.mListener = mListener;
 	}
@@ -85,7 +87,11 @@ public class MakoKeyboard extends LinearLayout {
 	@Override
 	protected void onFinishInflate() {
 		super.onFinishInflate();
-		
+		if(isInEditMode())
+		{
+			return;
+		}
+
 		mapKey("1", "!");
 		mapKey("2", "@");
 		mapKey("3", "#");
@@ -139,7 +145,7 @@ public class MakoKeyboard extends LinearLayout {
 
 		mShift = (Button)findViewById(R.id.MakoKeyboard_Shift);
 		mShift.setOnClickListener(mShiftClickListener);
-		
+
 		// Tie up the callbacks on the keys
 		for(int i = 0; i<getChildCount(); i++) {
 			if(getChildAt(i) instanceof ViewGroup) {
