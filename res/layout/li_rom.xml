@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout1"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="8dp" >
 
+    <ImageView
+        android:id="@+id/RomListItem.Image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@null"
+        android:padding="5dp" />
+
     <TextView
         android:id="@+id/RomListItem.Name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_toRightOf="@+id/RomListItem.Image"
         android:text="@null"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -16,6 +27,9 @@
         android:id="@+id/RomListItem.Size"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_below="@+id/RomListItem.Name"
+        android:layout_toRightOf="@+id/RomListItem.Image"
         android:text="@null"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -23,7 +37,10 @@
         android:id="@+id/RomListItem.Date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_below="@+id/RomListItem.Size"
+        android:layout_toRightOf="@+id/RomListItem.Image"
         android:text="@null"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
-</LinearLayout>
+</RelativeLayout>
