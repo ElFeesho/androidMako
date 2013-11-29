@@ -1,10 +1,17 @@
 package com.rtg.makovm;
 
+import java.io.DataOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
@@ -190,12 +197,10 @@ public class Makoid extends Activity implements MakoKeyboardListener, MakoViewLi
 		if (dir == JoystickView.DIR_LEFT)
 		{
 			mView.setKeys(MakoConstants.KEY_LF);
-			Log.i("JoystickView", "Left On");
 		}
 		else if (dir == JoystickView.DIR_RIGHT)
 		{
 			mView.setKeys(MakoConstants.KEY_RT);
-			Log.i("JoystickView", "Right On");
 		}
 		else if (dir == JoystickView.DIR_UP)
 		{
@@ -214,12 +219,10 @@ public class Makoid extends Activity implements MakoKeyboardListener, MakoViewLi
 		if (dir == JoystickView.DIR_LEFT)
 		{
 			mView.unsetKeys(MakoConstants.KEY_LF);
-			Log.i("JoystickView", "Left Off");
 		}
 		else if (dir == JoystickView.DIR_RIGHT)
 		{
 			mView.unsetKeys(MakoConstants.KEY_RT);
-			Log.i("JoystickView", "Right Off");
 		}
 		else if (dir == JoystickView.DIR_DOWN)
 		{
@@ -229,6 +232,55 @@ public class Makoid extends Activity implements MakoKeyboardListener, MakoViewLi
 		{
 			mView.unsetKeys(MakoConstants.KEY_UP);
 		}
+	}
+
+	@Override
+	protected void onStop()
+	{
+		super.onStop();
+		new AsyncTask<Void, Void, Void>()
+		{
+			@Override
+			protected Void doInBackground(Void... params)
+			{
+				String outputName = mRomFileName + ".sav";
+				FileOutputStream fout = null;
+				try
+				{
+					fout = new FileOutputStream(outputName);
+				}
+				catch (FileNotFoundException e)
+				{
+					e.printStackTrace();
+				}
+				DataOutputStream dout = new DataOutputStream(fout);
+				try
+				{
+					for (int i = 0; i < mView.getMakoVm().m.length; i++)
+					{
+						dout.writeInt(mView.getMakoVm().m[i]);
+					}
+					fout.close();
+					dout.close();
+				}
+				catch (IOException e)
+				{
+					e.printStackTrace();
+				}
+
+				Bitmap bitmap = Bitmap.createBitmap(mView.getMakoVm().p, 320, 240, Bitmap.Config.ARGB_8888);
+				try
+				{
+					bitmap.compress(CompressFormat.PNG, 100, new FileOutputStream(mRomFileName+".png"));
+				}
+				catch (FileNotFoundException e)
+				{
+					e.printStackTrace();
+				}
+				return null;
+			}
+		}.execute();
+		mView.getMakoVm();
 	}
 
 	@Override

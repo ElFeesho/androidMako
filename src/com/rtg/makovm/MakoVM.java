@@ -5,16 +5,19 @@ import java.util.Random;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
+import android.util.Log;
 
-public class MakoVM implements MakoConstants {
-	private final static int AUDIO_BUFFER_SIZE = 670;
+public class MakoVM implements MakoConstants
+{
+	private final static int AUDIO_BUFFER_SIZE = 142;
+
 	private final Random rand = new Random();
 	public       int[] m;                      // main memory
 	public final int[] p = new int[320 * 240]; // pixel buffer
 	public int keys = 0;
-	private byte[] audioBuffer = new byte[AUDIO_BUFFER_SIZE];
+	private final byte[] audioBuffer = new byte[AUDIO_BUFFER_SIZE];
 	private int audioPointer = 0;
-	private final AudioTrack mAudio = new AudioTrack(AudioManager.STREAM_MUSIC, 8000, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_8BIT, AUDIO_BUFFER_SIZE, AudioTrack.MODE_STREAM);
+	private final AudioTrack mAudio = new AudioTrack(AudioManager.STREAM_MUSIC, 8000, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_8BIT, 256, AudioTrack.MODE_STREAM);
 
 	private Thread mSoundThread = new Thread()
 	{

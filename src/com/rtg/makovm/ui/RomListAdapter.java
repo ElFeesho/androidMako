@@ -6,10 +6,14 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.rtg.makovm.R;
@@ -18,7 +22,6 @@ public class RomListAdapter extends BaseAdapter
 {
 	private static Comparator<File> sDateComparator = new Comparator<File>()
 	{
-
 		@Override
 		public int compare(File lhs, File rhs)
 		{
@@ -26,8 +29,40 @@ public class RomListAdapter extends BaseAdapter
 		}
 	};
 
+	private static class ImageLoaderTask extends AsyncTask<ImageView, Void, Bitmap>
+	{
+		private final ImageView mImageView;
+		private String mImageUrl;
+
+		public ImageLoaderTask(ImageView aImageView)
+		{
+			mImageView = aImageView;
+		}
+
+		@Override
+		protected Bitmap doInBackground(ImageView... aParams)
+		{
+			mImageUrl = (String) aParams[0].getTag();
+			if(mImageUrl != null)
+			{
+				return BitmapFactory.decodeFile(mImageUrl);
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Bitmap result)
+		{
+			if(mImageView.getTag()!=null && mImageView.getTag().equals(mImageUrl))
+			{
+				mImageView.setImageBitmap(result);
+			}
+		}
+	}
+
 	private static class ViewHolder
 	{
+		ImageView img;
 		TextView name;
 		TextView size;
 		TextView date;
@@ -64,6 +99,7 @@ public class RomListAdapter extends BaseAdapter
 			vh.name = (TextView) convertView.findViewById(R.id.RomListItem_Name);
 			vh.size = (TextView) convertView.findViewById(R.id.RomListItem_Size);
 			vh.date = (TextView) convertView.findViewById(R.id.RomListItem_Date);
+			vh.img = (ImageView) convertView.findViewById(R.id.RomListItem_Image);
 			convertView.setTag(vh);
 		}
 		else
@@ -75,6 +111,17 @@ public class RomListAdapter extends BaseAdapter
 		vh.name.setText(rom.getName());
 		vh.size.setText(String.format("%.2f Kbytes", rom.length() / 1024.0f));
 		vh.date.setText(rom.lastModified() + "");
+		if(new File(rom.getAbsolutePath()+".png").exists())
+		{
+			vh.img.setVisibility(View.VISIBLE);
+			vh.img.setTag(rom.getAbsolutePath()+".png");
+			new ImageLoaderTask(vh.img).execute(vh.img);
+		}
+		else
+		{
+			vh.img.setVisibility(View.GONE);
+			vh.img.setTag(null);
+		}
 
 		return convertView;
 	}
