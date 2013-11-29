@@ -36,7 +36,6 @@ public class Maker implements MakoConstants
 
 	public static void compile(String inputFile, String output)
 	{
-
 		Maker compiler = new Maker(new AndroidLangLibraryProvider());
 
 		compiler.rom.showOptimizations(false);
@@ -191,6 +190,7 @@ public class Maker implements MakoConstants
 		}
 		compileFragment(contents.toString());
 		currentPath.pop();
+		in.close();
 	}
 
 	private void compileFragment(String source) throws IOException

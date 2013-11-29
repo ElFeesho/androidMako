@@ -159,7 +159,7 @@ public class MakoVM implements MakoConstants
 			drawSprite(tile, status, px - scrollx, py - scrolly);
 		}
 		drawGrid(true, scrollx, scrolly);
-        audioPointer = audioBuffer.length-1;
+
 		if(audioPointer>0)
 		{
 			mAudio.write(audioBuffer, 0, audioPointer);

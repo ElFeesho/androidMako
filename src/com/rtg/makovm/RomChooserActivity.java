@@ -97,12 +97,6 @@ public class RomChooserActivity extends ListActivity
 		new LibraryInflationTask(this)
 		{
 			@Override
-			protected void onPreExecute()
-			{
-				//...
-			}
-
-			@Override
 			protected void onPostExecute(Void result)
 			{
 				pdlg.dismiss();

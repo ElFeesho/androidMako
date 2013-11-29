@@ -23,7 +23,7 @@ import com.rtg.makovm.MakoView.MakoViewListener;
 public class Makoid extends Activity implements MakoKeyboardListener, MakoViewListener, JoystickListener, ButtonViewListener
 {
 	public static final String EXTRA_ROM_FILE = "romfile";
-	
+
 	private MakoView mView = null;
 	private JoystickView mJoystick;
 	private ButtonView mButton;
@@ -252,6 +252,7 @@ public class Makoid extends Activity implements MakoKeyboardListener, MakoViewLi
 				catch (FileNotFoundException e)
 				{
 					e.printStackTrace();
+					return null;
 				}
 				DataOutputStream dout = new DataOutputStream(fout);
 				try
@@ -266,6 +267,7 @@ public class Makoid extends Activity implements MakoKeyboardListener, MakoViewLi
 				catch (IOException e)
 				{
 					e.printStackTrace();
+					return null;
 				}
 
 				Bitmap bitmap = Bitmap.createBitmap(mView.getMakoVm().p, 320, 240, Bitmap.Config.ARGB_8888);

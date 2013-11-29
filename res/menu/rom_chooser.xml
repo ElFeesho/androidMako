@@ -4,10 +4,10 @@
         android:id="@+id/refresh"
         android:icon="@android:drawable/ic_menu_rotate"
         android:showAsAction="always"
-        android:title="Refresh">
+        android:title="@string/menu_refresh">
     </item>
     <item
         android:id="@+id/compile"
-        android:title="Compile"/>
+        android:title="@string/menu_compile"/>
 
 </menu>

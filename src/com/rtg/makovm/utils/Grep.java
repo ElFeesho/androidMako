@@ -31,7 +31,12 @@ public class Grep
 			while(br.ready())
 			{
 				String aLine = br.readLine();
-				if(aLine.length()<aPin.length())
+				if(aLine == null)
+				{
+					break;
+				}
+
+				if(aLine.length() < aPin.length())
 				{
 					continue;
 				}

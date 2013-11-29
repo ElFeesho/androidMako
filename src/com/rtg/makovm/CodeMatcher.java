@@ -1,7 +1,11 @@
 package com.rtg.makovm;
 
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Stack;
 
 /**
 * CodeMatcher is a peephole optimizer for Mako bytecode.
@@ -257,15 +261,13 @@ public class CodeMatcher implements MakoConstants {
 		Sync(  OP_SYNC,   1, false),
 
 		DelayConst( OP_CONST, 2, false);
-	
+
 		final int opcode;
 		final int size;
-		final boolean branch;
-	
+
 		Ops(int opcode, int size, boolean branch) {
 			this.opcode = opcode;
 			this.size   = size;
-			this.branch = branch;
 		}
 	}
 }

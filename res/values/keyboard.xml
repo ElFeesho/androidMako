@@ -42,12 +42,12 @@
     <string name="key_semicolon">;</string>
     <string name="key_apostrophe">\'</string>
     <string name="key_Del">Del</string>
-    <string name="key_enter">Enter</string>
+    <string name="key_enter">↲</string>
     <string name="key_cursor_left">←</string>
     <string name="key_cursor_right">→</string>
     <string name="key_cursor_up">↑</string>
     <string name="key_cursor_down">↓</string>
-    <string name="key_shift">Shift</string>
+    <string name="key_shift">⇧</string>
     <string name="key_minus">-</string>
     <string name="key_plus">+</string>
     <string name="key_square_bracket_left">[</string>
