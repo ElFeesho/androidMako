@@ -18,7 +18,7 @@ import android.view.View;
 public class MakoView extends View {
 
 	private static final String TAG = "MakoView";
-	private static final int FRAME_RATE = 1000 / 60;
+	private static final int FRAME_RATE = 1000 / 100;
 	private MakoVM mVm;
 
 	private float mScale;

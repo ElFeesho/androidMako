@@ -7,7 +7,7 @@ import android.media.AudioManager;
 import android.media.AudioTrack;
 
 public class MakoVM implements MakoConstants {
-	private final static int AUDIO_BUFFER_SIZE = 512;
+	private final static int AUDIO_BUFFER_SIZE = 670;
 	private final Random rand = new Random();
 	public       int[] m;                      // main memory
 	public final int[] p = new int[320 * 240]; // pixel buffer
@@ -16,10 +16,19 @@ public class MakoVM implements MakoConstants {
 	private int audioPointer = 0;
 	private final AudioTrack mAudio = new AudioTrack(AudioManager.STREAM_MUSIC, 8000, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_8BIT, AUDIO_BUFFER_SIZE, AudioTrack.MODE_STREAM);
 
+	private Thread mSoundThread = new Thread()
+	{
+		public void run()
+		{
+
+		}
+	};
+	
 	public final java.util.Queue<Integer> keyQueue = new java.util.LinkedList<Integer>();
 
 	public MakoVM(int[] m) {
 		this.m = m;
+		mSoundThread.start();
 		mAudio.play();
 	}
 
@@ -92,7 +101,7 @@ public class MakoVM implements MakoConstants {
 			audioBuffer[audioPointer++] = (byte)value;
 			if(audioPointer >= audioBuffer.length)
 			{
-				audioPointer = 0;
+				audioPointer = audioBuffer.length-1;
 			}
 			return;
 		}
@@ -157,7 +166,7 @@ public class MakoVM implements MakoConstants {
 			drawSprite(tile, status, px - scrollx, py - scrolly);
 		}
 		drawGrid(true, scrollx, scrolly);
-
+        audioPointer = audioBuffer.length-1;
 		if(audioPointer>0)
 		{
 			mAudio.write(audioBuffer, 0, audioPointer);

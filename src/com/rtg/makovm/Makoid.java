@@ -16,7 +16,7 @@ import com.rtg.makovm.MakoView.MakoViewListener;
 public class Makoid extends Activity implements MakoKeyboardListener, MakoViewListener, JoystickListener, ButtonViewListener
 {
 	public static final String EXTRA_ROM_FILE = "romfile";
-
+	
 	private MakoView mView = null;
 	private JoystickView mJoystick;
 	private ButtonView mButton;
