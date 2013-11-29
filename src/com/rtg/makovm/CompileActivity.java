@@ -20,7 +20,7 @@ import com.rtg.makovm.utils.GameZipExtractor;
 
 public class CompileActivity extends Activity
 {
-	private File mDir = new File("/sdcard");
+	private File mDir = new File(Environment.getExternalStorageDirectory().getPath());
 
 	private class FileAdapter extends BaseAdapter
 	{
@@ -93,7 +93,7 @@ public class CompileActivity extends Activity
 						@Override
 						protected Void doInBackground(File... p1)
 						{
-							Maker.compile(p1[0].getAbsolutePath(), "/sdcard/Mako/"+p1[0].getName().substring(0, p1[0].getName().lastIndexOf(".")));
+							Maker.compile(p1[0].getAbsolutePath(), mDir.getPath()+File.separator+p1[0].getName().substring(0, p1[0].getName().lastIndexOf(".")));
 							return null;
 						}
 

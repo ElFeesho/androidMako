@@ -23,7 +23,6 @@ public class MakoView extends SurfaceView
 {
 
 	private static final String TAG = "MakoView";
-	private static final int FRAME_RATE = 1000 / 100;
 	private MakoVM mVm;
 
 	private float mScale;

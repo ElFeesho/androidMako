@@ -18,6 +18,7 @@ import java.util.Set;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.SparseArray;
 
 public class MakoRom implements MakoConstants
 {
@@ -446,7 +447,7 @@ public class MakoRom implements MakoConstants
 		add(OP_SYNC, Type.Code);
 	}
 
-	private static final Map<Integer, String> mnemonics = new HashMap<Integer, String>();
+	private static final SparseArray<String> mnemonics = new SparseArray<String>();
 	{
 		mnemonics.put(OP_CONST, "CONST");
 		mnemonics.put(OP_CALL, "CALL");

@@ -5,7 +5,6 @@ import java.util.Random;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
-import android.util.Log;
 
 public class MakoVM implements MakoConstants
 {
@@ -19,19 +18,10 @@ public class MakoVM implements MakoConstants
 	private int audioPointer = 0;
 	private final AudioTrack mAudio = new AudioTrack(AudioManager.STREAM_MUSIC, 8000, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_8BIT, 256, AudioTrack.MODE_STREAM);
 
-	private Thread mSoundThread = new Thread()
-	{
-		public void run()
-		{
-
-		}
-	};
-	
 	public final java.util.Queue<Integer> keyQueue = new java.util.LinkedList<Integer>();
 
 	public MakoVM(int[] m) {
 		this.m = m;
-		mSoundThread.start();
 		mAudio.play();
 	}
 
