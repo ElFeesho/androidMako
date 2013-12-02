@@ -99,10 +99,11 @@ public class Maker implements MakoConstants
 		defineVariable("CO", CO);
 		defineVariable("AU", AU);
 		defineVariable("KB", KB);
-		/*
-		 * defineVariable("XO", XO); defineVariable("XA", XA);
-		 * defineVariable("XS", XS);
-		 */
+
+		defineVariable("XO", XO);
+		defineVariable("XA", XA);
+		defineVariable("XS", XS);
+
 	}
 
 	public MakoRom compile(String filename)
