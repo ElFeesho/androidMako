@@ -1,4 +1,4 @@
-package com.rtg.makovm;
+package com.rtg.makovm.ui;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -7,6 +7,9 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.concurrent.Semaphore;
+
+import com.rtg.makovm.MakoConstants;
+import com.rtg.makovm.MakoVM;
 
 import android.content.Context;
 import android.graphics.Canvas;

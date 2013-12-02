@@ -1,7 +1,10 @@
-package com.rtg.makovm;
+package com.rtg.makovm.ui;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import com.rtg.makovm.R;
+import com.rtg.makovm.R.id;
 
 import android.content.Context;
 import android.util.AttributeSet;

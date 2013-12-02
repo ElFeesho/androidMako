@@ -1,4 +1,4 @@
-package com.rtg.makovm;
+package com.rtg.makovm.ui;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;

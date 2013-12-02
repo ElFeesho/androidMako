@@ -4,13 +4,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
 >
-    <com.rtg.makovm.MakoView
+    <com.rtg.makovm.ui.MakoView
         android:keepScreenOn="true"
         android:id="@+id/Makoid.MakoView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 	/>
-    <com.rtg.makovm.JoystickView 
+    <com.rtg.makovm.ui.JoystickView 
 		android:id="@+id/joystick"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
@@ -18,7 +18,7 @@
 		android:layout_marginTop="20dp"
 		/>
 	
-	<com.rtg.makovm.ButtonView
+	<com.rtg.makovm.ui.ButtonView
 		android:id="@+id/button_a"
 		android:layout_gravity="right"
 		android:layout_marginRight="20dp"

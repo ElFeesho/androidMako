@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.rtg.makovm.MakoKeyboard xmlns:android="http://schemas.android.com/apk/res/android"
+<com.rtg.makovm.ui.MakoKeyboard xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
@@ -299,4 +299,4 @@
             android:textSize="28sp" />
     </LinearLayout>
 
-</com.rtg.makovm.MakoKeyboard>
+</com.rtg.makovm.ui.MakoKeyboard>

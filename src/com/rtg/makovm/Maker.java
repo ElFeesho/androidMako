@@ -34,7 +34,7 @@ public class Maker implements MakoConstants
 
 	private LibraryProvider mLibraryProvider;
 
-	public static void compile(String inputFile, String output)
+	public static boolean compile(String inputFile, String output)
 	{
 		Maker compiler = new Maker(new AndroidLangLibraryProvider());
 
@@ -48,11 +48,15 @@ public class Maker implements MakoConstants
 		catch (IOException f)
 		{
 			System.out.println("Warning: unable to load lib/Lang.fs!");
+			f.printStackTrace();
+			return false;
 		}
+
 		compiler.compile(inputFile);
 
 		compiler.rom.write(output, false);
 
+		return true;
 	}
 
 	public Maker(MakoRom rom)

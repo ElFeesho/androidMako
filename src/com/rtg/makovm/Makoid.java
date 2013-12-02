@@ -15,10 +15,14 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
-import com.rtg.makovm.ButtonView.ButtonViewListener;
-import com.rtg.makovm.JoystickView.JoystickListener;
-import com.rtg.makovm.MakoKeyboard.MakoKeyboardListener;
-import com.rtg.makovm.MakoView.MakoViewListener;
+import com.rtg.makovm.ui.ButtonView;
+import com.rtg.makovm.ui.JoystickView;
+import com.rtg.makovm.ui.MakoKeyboard;
+import com.rtg.makovm.ui.MakoView;
+import com.rtg.makovm.ui.ButtonView.ButtonViewListener;
+import com.rtg.makovm.ui.JoystickView.JoystickListener;
+import com.rtg.makovm.ui.MakoKeyboard.MakoKeyboardListener;
+import com.rtg.makovm.ui.MakoView.MakoViewListener;
 
 public class Makoid extends Activity implements MakoKeyboardListener, MakoViewListener, JoystickListener, ButtonViewListener
 {
